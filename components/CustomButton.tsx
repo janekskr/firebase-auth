@@ -1,16 +1,17 @@
 import { TouchableOpacity, StyleSheet, Text } from 'react-native'
 import React from 'react'
 import { COLORS } from '../assets/dummy';
+import CustomText from './CustomText';
 
 interface CustomButtonProps {
     onPress: any;
-    children: string;
+    children: any;
 }
 
 const CustomButton = ({children, onPress} : CustomButtonProps) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
-        <Text style={styles.buttonText}>{children}</Text>
+        <CustomText style={styles.buttonText} weight={700}>{children}</CustomText>
     </TouchableOpacity>
   )
 }
@@ -28,7 +29,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: COLORS.white,
     textAlign: "center",
-    fontWeight: "800",
     fontSize: 20,
   },
 })

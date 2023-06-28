@@ -1,22 +1,20 @@
-import { Alert, View, StyleSheet, KeyboardAvoidingView, Text } from 'react-native'
+import { Alert, StyleSheet, KeyboardAvoidingView, } from 'react-native'
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { FIREBASE_AUTH } from '../../firebaseConfig'
-import { CustomButton, Input } from '../../components'
-import { regex } from '../../assets/dummy'
+import { FIREBASE_AUTH } from '../firebaseConfig'
+import { CustomButton, Input, CustomText } from '../components'
+import { regex } from '../assets/dummy'
 
 const Register = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repeatPassword, setRepeatPassword] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
 
   const auth = FIREBASE_AUTH
 
-  const signUp = async (email: string, password: string, username: string) => {
-    try {
+  const signUp = async (email: string, password: string) => {
+    try { 
       await createUserWithEmailAndPassword(auth, email, password)
-      await updateProfile(auth.currentUser!, {displayName: username})
       alert('Zarejestrowano pomyślnie')
     }
     catch (error: any) {
@@ -30,20 +28,12 @@ const Register = () => {
     ) {
       Alert.alert('Błąd', 'Proszę poprawnie wypełnić formularz')
     } else {
-      signUp(email, password, username)
+      signUp(email, password)
     }
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Zarejestruj się</Text>
-      <KeyboardAvoidingView behavior="height" style={styles.keyboardContainer}>
-      <Input
-          type="username"
-          label="wpisz nazwę użytkownika"
-          value={username}
-          setValue={setUsername}
-          checkIsValid={() => { return regex.usernameRegex.test(username)}}
-        />
+    <KeyboardAvoidingView behavior="height" style={styles.container}>
+      <CustomText style={styles.title} weight={700}>Zarejestruj się</CustomText>
 
         <Input
           type="email"
@@ -70,8 +60,7 @@ const Register = () => {
         />
 
         <CustomButton onPress={handleSignUp}>Zarejestruj się</CustomButton>
-      </KeyboardAvoidingView>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -84,13 +73,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
     marginBottom: 20
-  },
-  keyboardContainer: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 })
 

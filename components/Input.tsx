@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.darkGrey,
     flex: 1,
+    fontFamily: "Lexend-400"
   },
 });
 

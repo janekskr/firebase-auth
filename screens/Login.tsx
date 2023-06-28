@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { FIREBASE_AUTH } from '../../firebaseConfig'
-import { CustomButton, Input } from '../../components'
-import { COLORS } from '../../assets/dummy'
+import { FIREBASE_AUTH } from '../firebaseConfig'
+import { CustomButton, Input, CustomText } from '../components'
+import { COLORS } from '../assets/dummy'
 
 const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>("")
@@ -25,9 +25,8 @@ const Login = ({ navigation }: any) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hello 👋</Text>
-      <KeyboardAvoidingView behavior='height' style={styles.keyboardContainer}>
+    <KeyboardAvoidingView behavior="height" style={styles.container}>
+        <CustomText style={{fontSize: 30, marginBottom: 20 }} weight={500}>Zaloguj się</CustomText>
         <Input
           type="email"
           label="wpisz adres email"
@@ -47,12 +46,11 @@ const Login = ({ navigation }: any) => {
         {
           loading ?
             <ActivityIndicator size="large" color={COLORS.blue} /> :
-            <CustomButton onPress={signIn}>Login</CustomButton>
+            <CustomButton onPress={signIn}>Zaloguj się</CustomButton>
         }
-      </KeyboardAvoidingView>
-      <Text style={{ color: COLORS.darkGrey, marginBottom: 10 }}>Nie posiadasz jeszcze konta?</Text>
-      <Text onPress={() => navigation.navigate("Register")} style={{ color: COLORS.blue }} >Zarejestruj się tutaj</Text>
-    </View>
+      <CustomText style={{ color: COLORS.darkGrey, marginBottom: 5 }}>Nie posiadasz jeszcze konta?</CustomText>
+      <CustomText onPress={() => navigation.navigate("Register")} style={{ color: COLORS.blue }} >Zarejestruj się</CustomText>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -63,16 +61,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: 20
-  },
-  keyboardContainer: {
-    width: "100%",
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
 })
 
 export default Login
