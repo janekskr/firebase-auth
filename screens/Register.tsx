@@ -1,21 +1,26 @@
-import { Alert, StyleSheet, KeyboardAvoidingView, } from 'react-native'
-import React, { useState } from 'react'
+import { Alert, StyleSheet, KeyboardAvoidingView, Image, View } from 'react-native'
+import React, { useContext, useState } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { FIREBASE_AUTH } from '../firebaseConfig'
 import { CustomButton, Input, CustomText } from '../components'
-import { regex } from '../assets/dummy'
+import { COLORS, regex } from '../assets/dummy'
+import { AuthContext } from '../context/AuthContext'
 
 const Register = () => {
+  const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repeatPassword, setRepeatPassword] = useState<string>("");
+
+  const {setUserDisplayName} = useContext(AuthContext)
 
   const auth = FIREBASE_AUTH
 
   const signUp = async (email: string, password: string) => {
     try { 
       await createUserWithEmailAndPassword(auth, email, password)
-      alert('Zarejestrowano pomyślnie')
+      await updateProfile(auth.currentUser!, {displayName: username})
+      setUserDisplayName(auth.currentUser?.displayName)
     }
     catch (error: any) {
       alert(`Sign up failed ${error.message}`)
@@ -32,8 +37,20 @@ const Register = () => {
     }
   }
   return (
-    <KeyboardAvoidingView behavior="height" style={styles.container}>
+    <View style={{flex: 1}}>
+      <Image 
+        source={require("../assets/img/blob.png")}
+        style={{height: 320, position:"absolute", zIndex: -1  }}
+      />
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <CustomText style={styles.title} weight={700}>Zarejestruj się</CustomText>
+      <Input
+          type="username"
+          label="wpisz nazwę użytkownika"
+          value={username}
+          setValue={setUsername}
+          checkIsValid={() => { return regex.usernameRegex.test(username) }}
+        />
 
         <Input
           type="email"
@@ -61,19 +78,23 @@ const Register = () => {
 
         <CustomButton onPress={handleSignUp}>Zarejestruj się</CustomButton>
     </KeyboardAvoidingView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 250,
     padding: 30,
+    borderTopLeftRadius: 60,
     flex: 1,
+    justifyContent: "flex-start",
     alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: COLORS.white,  
   },
   title: {
-    fontSize: 30,
-    marginBottom: 20
+    fontSize: 35,
+    marginBottom: 10
   }
 })
 

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Alert } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Alert, Image } from 'react-native'
 import React, { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { FIREBASE_AUTH } from '../firebaseConfig'
@@ -18,15 +18,20 @@ const Login = ({ navigation }: any) => {
       await signInWithEmailAndPassword(auth, email, password)
     } catch (error: any) {
       console.error(error)
-      alert(`Sign in failed ${error.message}`)
+      Alert.alert("błąd", `Logowanie nie powiodło się ${error.message}`)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" style={styles.container}>
-        <CustomText style={{fontSize: 30, marginBottom: 20 }} weight={500}>Zaloguj się</CustomText>
+    <View style={{ flex: 1 }}>
+      <Image 
+        source={require("../assets/img/blob.png")}
+        style={{height: 320, position: "absolute", zIndex: -1}}
+      />
+      <KeyboardAvoidingView behavior="height" style={styles.container}>
+        <CustomText style={{ fontSize: 35, marginBottom: 10 }} weight={700}>Zaloguj się</CustomText>
         <Input
           type="email"
           label="wpisz adres email"
@@ -48,18 +53,22 @@ const Login = ({ navigation }: any) => {
             <ActivityIndicator size="large" color={COLORS.blue} /> :
             <CustomButton onPress={signIn}>Zaloguj się</CustomButton>
         }
-      <CustomText style={{ color: COLORS.darkGrey, marginBottom: 5 }}>Nie posiadasz jeszcze konta?</CustomText>
-      <CustomText onPress={() => navigation.navigate("Register")} style={{ color: COLORS.blue }} >Zarejestruj się</CustomText>
-    </KeyboardAvoidingView>
+        <CustomText style={{ color: COLORS.darkGrey, marginBottom: 5 }}>Nie posiadasz jeszcze konta?</CustomText>
+        <CustomText onPress={() => navigation.navigate("Register")} style={{ color: COLORS.blue }} >Zarejestruj się</CustomText>
+      </KeyboardAvoidingView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 250,
     padding: 30,
+    borderTopLeftRadius: 60,
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: COLORS.white,  
   },
 })
 

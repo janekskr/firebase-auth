@@ -81,11 +81,10 @@ const Input = ({ label, type, value, setValue, checkIsValid }: InputProps) => {
 
 const styles = StyleSheet.create({
   input: {
-    fontWeight: "bold",
     fontSize: 16,
     color: COLORS.darkGrey,
     flex: 1,
-    fontFamily: "Lexend-400"
+    fontFamily: "Lexend-700"
   },
 });
 

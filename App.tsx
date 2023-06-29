@@ -3,6 +3,7 @@ import {useFonts} from "expo-font"
 import {useCallback} from "react" 
 import * as SplashScreen from 'expo-splash-screen'
 import {View} from "react-native"
+import { AuthProvider } from "./context/AuthContext"
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +26,11 @@ const App = () => {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={{flex: 1}}>
-      <AppNav />
-    </View>
+    <AuthProvider>
+      <View onLayout={onLayoutRootView} style={{flex: 1}}>
+        <AppNav />
+      </View>
+    </AuthProvider>
   )
 }
 

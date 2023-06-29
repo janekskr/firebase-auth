@@ -1,12 +1,14 @@
 import { View, StyleSheet } from 'react-native'
 import { FIREBASE_AUTH } from '../firebaseConfig'
 import { CustomButton, CustomText } from '../components'
+import { AuthContext } from '../context/AuthContext'
+import { useContext } from "react"
 
 const Home = () => {
-  console.log(FIREBASE_AUTH.currentUser?.email)
+  const { userDisplayName } = useContext(AuthContext)
   return (
       <View style={styles.container}>
-        <CustomText style={styles.title}>Witaj {FIREBASE_AUTH.currentUser?.displayName} 👋</CustomText>
+        <CustomText style={styles.title}>Witaj {userDisplayName} 👋</CustomText>
         <CustomButton onPress={() => FIREBASE_AUTH.signOut()}>Wyloguj sie</CustomButton>
       </View>
     )
