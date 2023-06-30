@@ -5,10 +5,10 @@ import { AuthContext } from '../context/AuthContext'
 import { useContext } from "react"
 
 const Home = () => {
-  const { userDisplayName } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   return (
       <View style={styles.container}>
-        <CustomText style={styles.title}>Witaj {userDisplayName} 👋</CustomText>
+        <CustomText style={styles.title}>Witaj {user?.displayName} 👋</CustomText>
         <CustomButton onPress={() => FIREBASE_AUTH.signOut()}>Wyloguj sie</CustomButton>
       </View>
     )

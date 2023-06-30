@@ -1,21 +1,26 @@
-import { User } from "firebase/auth";
-import { createContext, useState } from "react";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import { FIREBASE_AUTH } from "../firebaseConfig";
 
 interface AuthContextType {
-    user : User | null;
-    userDisplayName : string | null | undefined;
-    setUser : (user : User | null) => void;
-    setUserDisplayName : (displayName : string | null | undefined) => void;
+    user: User | null;
+    setUser: (user: User | null) => void;
 }
 
 export const AuthContext = createContext({} as AuthContextType);
 
-export const AuthProvider = ({ children } : {children : React.ReactNode}) => {
-    const [user, setUser] = useState<User | null>(null)
-    const [userDisplayName, setUserDisplayName] = useState<string | null | undefined>(undefined)
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const [user, setUser] = useState< User | null >(null)
+
+
+    useEffect(() => {
+        onAuthStateChanged(FIREBASE_AUTH, (user) => {
+            setUser(user)
+        })
+    }, [user])
 
     return (
-        <AuthContext.Provider value={{user, setUser, setUserDisplayName, userDisplayName}}>
+        <AuthContext.Provider value={{ user, setUser }}>
             {children}
         </AuthContext.Provider>
     )
